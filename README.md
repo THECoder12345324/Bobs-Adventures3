@@ -1,2 +1,2 @@
-# Bobs-Adventures3
-A game ...
+# Bobs-Adventures2
+A thrilling action-packed game
