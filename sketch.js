@@ -13,6 +13,7 @@ var lo = 0;
 
 var jumpcount = 0;
 var level = 1;
+var warpthingy = 0;
 var a = 0;
 var b = 0;
 var c = 0;
@@ -58,6 +59,7 @@ function preload() {
                                     "img/run5l.png", "img/run6l.png", 
                                     "img/run7l.png", "img/run8l.png");
     crouching = loadAnimation("img/crouch1.png", "img/crouch2.png");
+    crouching2 = loadAnimation("img/crouch3.png", "img/crouch4.png");
     bobImage = loadAnimation("img/bob.png");
 
     world1 = loadImage("img/world-1-2.png");
@@ -261,35 +263,40 @@ function draw() {
         }
 
         if (lerpr == true) {
-                if (level == 2) {
-                    pin.x = lerp(pin.x, x2, 0.05);
-                    pin.y = lerp(pin.y, y2, 0.05);
-                    levelp = 2;
-                }
-                if (level == 3) {
-                    pin.x = lerp(pin.x, x3, 0.05);
-                    pin.y = lerp(pin.y, y3, 0.05);
-                    levelp = 3;
-                }
-                if (level == 4) {
-                    pin.x = lerp(pin.x, x4, 0.05);
-                    pin.y = lerp(pin.y, y4, 0.05);
-                    levelp = 4;
-                }
-                if (level == 5) {
-                    if (answered1 == true) {
-                        if (bonus1 == true) {
-                            pin.x = lerp(pin.x, bonus1x, 0.05);
-                            pin.y = lerp(pin.y, bonus1y, 0.05);
-                            levelp = 5;
-                        } 
-                        else {
-                            pin.x = lerp(pin.x, x5, 0.05);
-                            pin.y = lerp(pin.y, y5, 0.05);
-                            levelp = 5;
-                        }
+            if (level == 2) {
+                pin.x = lerp(pin.x, x2, 0.05);
+                pin.y = lerp(pin.y, y2, 0.05);
+                levelp = 2;
+            }
+            if (level == 3) {
+                pin.x = lerp(pin.x, x3, 0.05);
+                pin.y = lerp(pin.y, y3, 0.05);
+                levelp = 3;
+            }
+            if (level == 4) {
+                pin.x = lerp(pin.x, x4, 0.05);
+                pin.y = lerp(pin.y, y4, 0.05);
+                levelp = 4;
+            }
+            if (level == 5) {
+                if (answered1 == true) {
+                    if (bonus1 == true) {
+                        pin.x = lerp(pin.x, bonus1x, 0.05);
+                        pin.y = lerp(pin.y, bonus1y, 0.05);
+                        levelp = 5;
+                    } 
+                    else {
+                        pin.x = lerp(pin.x, x5, 0.05);
+                        pin.y = lerp(pin.y, y5, 0.05);
+                        levelp = 5;
                     }
                 }
+            }
+            if (level == 6) {
+                pin.x = lerp(pin.x, x6, 0.05);
+                pin.y = lerp(pin.y, y6, 0.05);
+                levelp = 6;
+            }
         }
 
         if (keyWentDown("RIGHT_ARROW")) {
@@ -495,13 +502,14 @@ function draw() {
             map.loadMap();
         }
         if (map.timer > 60) {
+            warpthingy = bob.x/10;
             bob.setCollider("rectangle", 0, 0, bob.width - 30, bob.height);
             camera.zoom = 1;
             camera.position.x = bob.x;
             camera.position.y = bob.y - height / 10;
             imageMode(CORNER);
-            image(mountainImg, -200, -200, 9600, 1600);
-            image(mountainImg, 9400, -200, 9600, 1600);
+            image(mountainImg, bob.x - 1000 - warpthingy, -200, 9600, 1600);
+            //image(mountainImg, 9400, -200, 9600, 1600);
 
             groundcheck += 1;
             
@@ -530,12 +538,23 @@ function draw() {
                 }
             }
             else if (keyDown("LEFT_ARROW")) {
-                bob.changeAnimation("runningleft");
-                if (keyDown("SHIFT")) {
-                    bob.x -= 30;
+                if (keyDown("DOWN_ARROW")) {
+                    bob.changeAnimation("crouching2");
+                    if (keyDown("SHIFT")) {
+                        bob.x -= 20;
+                    }
+                    else {
+                        bob.x -= 15;
+                    }
                 }
                 else {
-                    bob.x -= 20;
+                    bob.changeAnimation("runningleft");
+                    if (keyDown("SHIFT")) {
+                        bob.x -= 30;
+                    }
+                    else {
+                        bob.x -= 20;
+                    }
                 }
             }
             else {
@@ -648,4 +667,5 @@ function draw() {
 
 function createLevel (array, title) {
     map = new Map(array, title);
+    console.log(level);
 }

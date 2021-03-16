@@ -52,6 +52,7 @@ class Map {
                         bob = createSprite(j * TILESIZE, i * TILESIZE, 40, 40);
                         var scl = (width / height) / 2;
                         bob.addAnimation("crouching", crouching);
+                        bob.addAnimation("crouching2", crouching2)
                         bob.addAnimation("runningright", runrightAnimation);
                         bob.addAnimation("runningleft", runleftAnimation);
                         bob.addAnimation("standing", bobImage);
