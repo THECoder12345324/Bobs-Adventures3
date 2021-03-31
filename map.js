@@ -1,7 +1,11 @@
 class Map {
-    constructor(array, title) {
+    constructor(array, title, autoscrollerx, autoxspeed, autoscrollery, autoyspeed) {
         this.map = array;
         this.title = title;
+        this.autoscrollerx = autoscrollerx;
+        this.autoscrollery = autoscrollery;
+        this.axspeed = autoxspeed;
+        this.ayspeed = autoyspeed;
 
         this.image1 = loadImage('img/ground1.png');
         this.image2 = loadImage('img/ground2.png');
@@ -12,6 +16,7 @@ class Map {
         this.middle = loadImage('img/middlebottom.png');
         this.right = loadImage('img/rightbottom.png');
         this.wiggle = loadImage('img/wigglesworth.png');
+        this.doorImg = loadImage('img/door.png');
         this.enemy1Img = loadImage('img/enemy1real.png');
         this.images = [this.image1, this.image2, this.image3];
         this.moveImg = loadImage('img/heavymetal.png');
@@ -27,6 +32,8 @@ class Map {
         this.materials = [];
         this.movePlatsH = [];
         this.movePlatsV = [];
+        this.realground = [];
+        this.doors = [];
         this.timer = 0;
         this.start = false;
 
@@ -62,6 +69,8 @@ class Map {
                     }
                     if (this.map[i][j] == '1') {
                         var ground = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
+                        var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
+                        groundcollider.visible = false;
                         if (i * TILESIZE > this.lowest) {
                             this.lowest = i * TILESIZE + 1;
                         }
@@ -71,7 +80,8 @@ class Map {
                         ground.scale = 2.4;
                         //ground.shapeColor = "green";
                         groundGroup.add(ground);
-                            this.allSprites.push(ground);
+                        groundcolGroup.add(groundcollider);
+                        this.allSprites.push(ground);
                         console.log("Ground");
                     }
                     if (this.map[i][j] == '2') {
@@ -128,6 +138,7 @@ class Map {
                         imge.scale = 0.5;
                         flag.shapeColor = "black";
                         flagpoleGroup.add(flag);
+                        flagpoleGroup.add(imge);
                             this.allSprites.push(flag);
                     }
                     if (this.map[i][j] == 'E') {
@@ -169,6 +180,10 @@ class Map {
                         movePlat.scale = 2.4;
                         groundGroup.add(movePlat);
                         this.movePlatsV.push(movePlat);
+                    }
+                    if (this.map[i][j] == 'D') {
+                        var door = new Door(j * TILESIZE, i * TILESIZE, this.doorImg, 2.4);
+                        this.doors.push(door);
                     }
                 }
             }
@@ -222,6 +237,12 @@ class Map {
                 this.movePlatsV[l].position.y += 5 * this.dir;
             }
         }
+        for (var m = 0; m < this.doors.length; m++) {
+            var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
+            if (d < width) {
+                this.doors[i].display();
+            }
+        }
         this.timer += 1;
     }
 
@@ -230,6 +251,7 @@ class Map {
         groundGroup.removeSprites();
         enemyGroup.removeSprites();
         materialGroup.removeSprites();
+        groundcolGroup.removeSprites();
         bob.remove();
     }
 }
