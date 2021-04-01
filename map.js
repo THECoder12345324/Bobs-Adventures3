@@ -24,6 +24,7 @@ class Map {
         this.x = 0;
 
         this.lowest = 0;
+        this.farthest = 0;
 
         this.dir = 1;
         this.switch = 0;
@@ -34,6 +35,7 @@ class Map {
         this.movePlatsV = [];
         this.realground = [];
         this.doors = [];
+        this.poles = [];
         this.timer = 0;
         this.start = false;
 
@@ -102,13 +104,15 @@ class Map {
                         pole.addImage(this.poleImg);
                         pole.scale = 2.4;
                         flagpoleGroup.add(pole);
+                        this.poles.push(pole);
                             this.allSprites.push(pole);
                     }
                     if (this.map[i][j] == '4') {
                         var flag = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
                         flag.shapeColor = "black";
                         flagpoleGroup.add(flag);
-                            this.allSprites.push(flag);
+                        this.allSprites.push(flag);
+                        this.farthest = (j * TILESIZE) - (TILESIZE / 2);
                     }
                     if (this.map[i][j] == '5') {
                         var bottom = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
@@ -171,6 +175,9 @@ class Map {
                         var movePlat = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
                         movePlat.addImage(this.moveImg);
                         movePlat.scale = 2.4;
+                        var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
+                        groundcollider.visible = false;
+                        groundcolGroup.add(groundcollider);
                         groundGroup.add(movePlat);
                         this.movePlatsH.push(movePlat);
                     }
@@ -178,6 +185,9 @@ class Map {
                         var movePlat = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
                         movePlat.addImage(this.moveImg);
                         movePlat.scale = 2.4;
+                        var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
+                        groundcollider.visible = false;
+                        groundcolGroup.add(groundcollider);
                         groundGroup.add(movePlat);
                         this.movePlatsV.push(movePlat);
                     }
@@ -198,7 +208,7 @@ class Map {
         }
         for (var i = 0; i < this.enemies.length; i++) {
             var a = dist(bob.x, bob.y, this.enemies[i].x, this.enemies[i].y);
-            if (a < width) {
+            if (a < width && a < height) {
                 this.enemies[i].display();
             }
             else {
@@ -209,7 +219,7 @@ class Map {
         }
         for (var j = 0; j < this.materials.length; j++) {
             var b = dist(bob.x, bob.y, this.materials[j].x, this.materials[j].y);
-            if (b < width) {
+            if (b < width && b < height) {
                 this.materials[j].display();
             }
         }
@@ -221,7 +231,7 @@ class Map {
             else {
                 var huh = TILESIZE+1;
             }
-            if (c < width) {
+            if (c < width && c < height) {
                 if (huh < TILESIZE) {
                     this.movePlatsH[k].x += 5 * this.dir;
                     this.movePlatsH[k+1].x += 5 * this.dir;
@@ -233,13 +243,13 @@ class Map {
         }
         for (var l = 0; l < this.movePlatsV.length; l++) {
             var d = dist(bob.x, bob.y, this.movePlatsV[l].x, this.movePlatsV[l].y);
-            if (d < width) {
+            if (d < width && d < height) {
                 this.movePlatsV[l].position.y += 5 * this.dir;
             }
         }
         for (var m = 0; m < this.doors.length; m++) {
             var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
-            if (d < width) {
+            if (d < width && d < height) {
                 this.doors[i].display();
             }
         }
