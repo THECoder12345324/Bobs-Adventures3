@@ -14,6 +14,7 @@ var lo = 0;
 var jumpcount = 0;
 var level = 1;
 var warpthingy = 0;
+var warpthingyy = 0;
 var a = 0;
 var b = 0;
 var c = 0;
@@ -77,6 +78,7 @@ function preload() {
     ringImg = loadImage("img/phone.png");
 
     mountainImg = loadImage("img/mountainbackground.png");
+    castleImg = loadImage("img/castlebg.png");
 }
 
 function setup() {
@@ -263,7 +265,7 @@ function draw() {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
-                    text("But sir! We've hear Wigglesworth is very dangerous!", width / 2, height / 5);
+                    text("But sir! We've heard Wigglesworth is very dangerous!", width / 2, height / 5);
                 }
                 if (addTimeforintro < 1250 && addTimeforintro > 1170) {
                     fill("black");
@@ -721,13 +723,17 @@ function draw() {
         }
         if (map.timer > 60) {
             warpthingy = bob.x/10;
+            warpthingyy = bob.y/5;
             bob.setCollider("rectangle", 0, 0, bob.width - 30, bob.height);
             camera.zoom = 1;
-            /*camera.position.x = bob.x;
-            camera.position.y = bob.y - height / 10;*/
-            imageMode(CORNER);
-            image(mountainImg, bob.x - 1000 - warpthingy, -200, 9600, 1600);
-            //image(mountainImg, 9400, -200, 9600, 1600);
+            if (level != 5 && bonus1 == false) {
+                imageMode(CORNER);
+                image(mountainImg, bob.x - 1000 - warpthingy, bob.y - (warpthingyy) - 900, 9600, 1600);
+            }
+            else {
+                imageMode(CORNER);
+                image(castleImg, bob.x - 100 - warpthingy, bob.y - warpthingyy - 900, 2160, 3840);
+            }
 
             groundcheck += 1;
             
@@ -900,8 +906,8 @@ function draw() {
         camera.zoom = 1;
         camera.position.x = bob.x;
         camera.position.y = bob.y - height / 10;
-        image(mountainImg, -200, -200, 9600, 1600);
-        image(mountainImg, 9400, -200, 9600, 1600);
+        imageMode(CORNER);
+        image(mountainImg, bob.x - 1000 - warpthingy, bob.y - (warpthingyy) - 900, 9600, 1600);
 
         map.update();
 
