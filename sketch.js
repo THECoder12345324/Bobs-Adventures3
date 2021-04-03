@@ -22,6 +22,11 @@ var d = 0;
 var e = 0;
 var f = 0;
 var g = 0;
+var scoreaddx = 0;
+var scoreaddy = 0;
+var scoreaddtimer = 0;
+var deadx = 0;
+var tick;
 
 var x1;
 var y1;
@@ -69,6 +74,8 @@ function preload() {
                                     "img/run7l.png", "img/run8l.png");
     crouching = loadAnimation("img/crouch1.png", "img/crouch2.png");
     crouching2 = loadAnimation("img/crouch3.png", "img/crouch4.png");
+    flagpoleAnimation = loadAnimation("img/flagpoleslide1.png", "img/flagpoleslide2.png");
+    bobDead = loadAnimation("img/dead.png");
     bobImage = loadAnimation("img/bob.png");
 
     world1 = loadImage("img/world-1-2.png");
@@ -609,7 +616,7 @@ function draw() {
                                      "2.....................................D.........................................................D.............................................3...........2",
                                      "2.....................................D.........................................................D.............................................3...........2",
                                      "2.....................................D..............................................☺..........D.............................................3...........2",
-                                     "2.....................................D.........................................................D............................................567.....G....2",
+                                     "2............S........................D.........................................................D............................................567.....G....2",
                                      "2.....11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112",
                                      "21............................................22.........2",
                                      "2.1...............22.....11...................22.........2",
@@ -732,7 +739,7 @@ function draw() {
             }
             else {
                 imageMode(CORNER);
-                image(castleImg, bob.x - 100 - warpthingy, bob.y - warpthingyy - 900, 2160, 3840);
+                image(castleImg, bob.x - 800 - warpthingy, bob.y - warpthingyy - 900, 3160, 3840);
             }
 
             groundcheck += 1;
@@ -870,26 +877,23 @@ function draw() {
             if (bob.isTouching(flagpoleGroup)) {
                 bob.x += TILESIZE / 2;
                 for (var i = 0; i < map.poles.length; i++) {
-                    if (map.score == 'W') {
-                        var distancetopole = dist(bob.x, bob.y, map.poles[i].x, map.poles[i].y);
-                        if (distancetopole < TILESIZE / 1.9) {
-                            addWood += (height - map.poles[i].y) / TILESIZE;
-                            addscore = (height - map.poles[i].y) / TILESIZE;
-                            console.log(addscore);
-                            text(addscore, bob.x, bob.y - 100);
-                        }
+                    var distancetopole = dist(bob.x, bob.y, map.poles[i].x, map.poles[i].y);
+                    if (distancetopole < TILESIZE / 1.9) {
+                        addscore = (height - map.poles[i].y) / TILESIZE;
+                        addWood += addscore + 2;
+                        console.log(addscore);
+                        scoreaddtimer = 255;
+                        scoreaddx = bob.x;
+                        scoreaddy = bob.y;
                     }
                 }
                 gamestate = "end";
             }
 
             if (bob.isTouching(enemyGroup)) {
-                gamestate = "start";
-                if (level == 1) {
-                    pin.x = x1;
-                    pin.y = y1;
-                }
-                map.destroy();
+                tick = 0;
+                deadx = bob.y - (warpthingyy) - 900;
+                gamestate = "dead";
             }
             if (bob.y > (map.lowest + (TILESIZE * 10))) {
                 gamestate = "start";
@@ -899,6 +903,36 @@ function draw() {
                 }
                 map.destroy();
             }
+        }
+    }
+
+    if (gamestate == "dead") {
+        tick += 1;
+        if (level != 5 && bonus1 == false) {
+            imageMode(CORNER);
+            image(mountainImg, bob.x - 1000 - warpthingy, deadx, 9600, 1600);
+        }
+        else {
+            imageMode(CORNER);
+            image(castleImg, bob.x - 800 - warpthingy, warpthingyy - 900, 3160, 3840);
+        }
+        if (tick < 100) {
+            if (tick == 1) {
+                bob.velocityY = 10;
+                bob.y -= 100;
+            }
+            bob.velocityY += 0.9;
+            bob.changeAnimation("dead");
+            bob.bounceOff(groundGroup);
+        }
+        else {
+            tick = 0;
+            gamestate = "start";
+            if (level == 1) {
+                pin.x = x1;
+                pin.y = y1;
+            }
+            map.destroy();
         }
     }
 
@@ -913,6 +947,7 @@ function draw() {
 
         bob.velocityX = 0;
         if (bob.isTouching(groundGroup)) {
+            bob.changeAnimation("runningright");
             bob.velocityY = 0;
             bob.velocityX = 10;
         }
@@ -920,6 +955,17 @@ function draw() {
             bob.velocityY = 4;
         }
         if (bob.isTouching(flagpoleGroup)) {
+            push();
+            textAlign(CENTER, CENTER);
+            textSize(40);
+            if (scoreaddtimer > 0) {
+                scoreaddtimer -= 2;
+            }
+            fill(255, 0, 0, scoreaddtimer);
+            var tempaddscore = addscore + 2;
+            text("+"+tempaddscore, scoreaddx - 100, scoreaddy - 100);
+            pop();
+            bob.changeAnimation("flagpole");
             bob.velocityY = 4;
         }
         else {

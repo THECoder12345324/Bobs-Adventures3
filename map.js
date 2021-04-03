@@ -61,7 +61,9 @@ class Map {
                         bob = createSprite(j * TILESIZE, i * TILESIZE, 40, 40);
                         var scl = (width / height) / 2;
                         bob.addAnimation("crouching", crouching);
-                        bob.addAnimation("crouching2", crouching2)
+                        bob.addAnimation("crouching2", crouching2);
+                        bob.addAnimation("flagpole", flagpoleAnimation);
+                        bob.addAnimation("dead", bobDead);
                         bob.addAnimation("runningright", runrightAnimation);
                         bob.addAnimation("runningleft", runleftAnimation);
                         bob.addAnimation("standing", bobImage);
@@ -112,6 +114,7 @@ class Map {
                         flag.shapeColor = "black";
                         flagpoleGroup.add(flag);
                         this.allSprites.push(flag);
+                        this.poles.push(flag);
                         this.farthest = (j * TILESIZE) - (TILESIZE / 2);
                     }
                     if (this.map[i][j] == '5') {
@@ -143,6 +146,7 @@ class Map {
                         flag.shapeColor = "black";
                         flagpoleGroup.add(flag);
                         flagpoleGroup.add(imge);
+                        this.poles.push(flag);
                             this.allSprites.push(flag);
                     }
                     if (this.map[i][j] == 'E') {
@@ -180,6 +184,7 @@ class Map {
                         groundcolGroup.add(groundcollider);
                         groundGroup.add(movePlat);
                         this.movePlatsH.push(movePlat);
+                        this.movePlatsH.push(groundcollider);
                     }
                     if (this.map[i][j] == 'V') {
                         var movePlat = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
@@ -190,6 +195,7 @@ class Map {
                         groundcolGroup.add(groundcollider);
                         groundGroup.add(movePlat);
                         this.movePlatsV.push(movePlat);
+                        this.movePlatsV.push(groundcollider);
                     }
                     if (this.map[i][j] == 'D') {
                         var door = new Door(j * TILESIZE, i * TILESIZE, this.doorImg, 2.4);
@@ -250,7 +256,7 @@ class Map {
         for (var m = 0; m < this.doors.length; m++) {
             var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
             if (d < width && d < height) {
-                this.doors[i].display();
+                this.doors[m].display();
             }
         }
         this.timer += 1;
