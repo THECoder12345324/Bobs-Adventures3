@@ -11,6 +11,7 @@ var groundcheck;
 var la = 0;
 var lo = 0;
 
+var iteration = 0;
 var jumpcount = 0;
 var level = 1;
 var warpthingy = 0;
@@ -86,6 +87,21 @@ function preload() {
 
     mountainImg = loadImage("img/mountainbackground.png");
     castleImg = loadImage("img/castlebg.png");
+
+    v1 = loadSound("snd/Recording1.m4a");
+    v2 = loadSound("snd/Recording2.m4a");
+    v3 = loadSound("snd/Recording3.m4a");
+    v4 = loadSound("snd/Recording4.m4a");
+    v5 = loadSound("snd/Recording5.m4a");
+    v6 = loadSound("snd/Recording6.m4a");
+    v7 = loadSound("snd/Recording7.m4a");
+    v8 = loadSound("snd/Recording8.m4a");
+    v9 = loadSound("snd/Recording9.m4a");
+    v10 = loadSound("snd/Recording10.m4a");
+    v11 = loadSound("snd/Recording11.m4a");
+    v12 = loadSound("snd/Recording12.m4a");
+    v13 = loadSound("snd/Recording13.m4a");
+    v14 = loadSound("snd/Recording14.m4a");
 }
 
 function setup() {
@@ -153,7 +169,7 @@ function draw() {
         if (addTimeforintro > 30 && addTimeforintro < 70) {
             text("In a far far world", width / 2 + addsome + 50, height / 2 + 70);
         }
-        if (addTimeforintro >= 60 && addTimeforintro < 1600) {
+        if (addTimeforintro >= 60 && addTimeforintro < 1780) {
             fakebob.visible = true;
             push();
             imageMode(CENTER);
@@ -175,13 +191,17 @@ function draw() {
                 fakebob.y = ((displayHeight - 100) / 1.4475);
                 fakebob._rotation = -90;
             }
-            if (addTimeforintro < 150) {
+            if (addTimeforintro < 180) {
                 fill("black");
                 textSize(40);
                 textAlign(CENTER, CENTER);
                 text("Maybe I'll finally get some rest today", width / 2, height / 6);
+                if (iteration == 0) {
+                    v1.play();
+                    iteration = 1;
+                }
             }
-            if (addTimeforintro > 150 && addTimeforintro < 400) {
+            if (addTimeforintro > 180 && addTimeforintro < 400) {
                 push();
                 imageMode(CENTER);
                 angleMode(DEGREES);
@@ -194,9 +214,13 @@ function draw() {
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Ugh, what now!", width / 2, height / 6);
+                    if (iteration == 1) {
+                        v2.play();
+                        iteration = 2;
+                    }
                 }
             }
-            if (addTimeforintro <= 150 || addTimeforintro >= 1300) {
+            if (addTimeforintro <= 180 || addTimeforintro >= 1585) {
                 push();
                 imageMode(CENTER);
                 image(ringImg, (displayWidth - 100) / 1.2907, (displayHeight - 100) / 1.5217, width / 14.33, height / 26.48);
@@ -214,7 +238,7 @@ function draw() {
                 fakebob.changeAnimation("runningright");
                 fakebob.x += 10;
             }
-            if (addTimeforintro >= 400 && addTimeforintro <= 1370) {
+            if (addTimeforintro >= 400 && addTimeforintro <= 1585) {
                 fakebob.changeAnimation("standing");
                 push();
                 imageMode(CENTER);
@@ -222,92 +246,142 @@ function draw() {
                 rotate(90);
                 image(ringImg, 0, 0, width / 14.33, height / 26.48);
                 pop();
-                if (addTimeforintro < 450) {
+                if (addTimeforintro < 470) {
                     fill("black");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("What is it, you ruined my sleep!", width / 2, height / 5);
+                    if (iteration == 2) {
+                        v3.play();
+                        iteration = 3;
+                    }
                 }
-                if (addTimeforintro < 550 && addTimeforintro > 470) {
+                if (addTimeforintro < 580 && addTimeforintro > 490) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Sorry sir, it was very important", width / 2, height / 5);
+                    if (iteration == 3) {
+                        v4.play();
+                        iteration = 4;
+                    }
                 }
-                if (addTimeforintro < 650 && addTimeforintro > 570) {
+                if (addTimeforintro < 710 && addTimeforintro > 600) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Your supplies for building your castle", width / 2, height / 5);
                     text("are well, stolen!", width / 2, height / 5 + 50);
+                    if (iteration == 4) {
+                        v5.play();
+                        iteration = 5;
+                    }
                 }
-                if (addTimeforintro < 750 && addTimeforintro > 670) {
+                if (addTimeforintro < 800 && addTimeforintro > 730) {
                     fill("black");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("What! By who!", width / 2, height / 5);
+                    if (iteration == 5) {
+                        v6.play();
+                        iteration = 6;
+                    }
                 }
-                if (addTimeforintro < 810 && addTimeforintro > 770) {
+                if (addTimeforintro < 880 && addTimeforintro > 820) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Let me check sir", width / 2, height / 5);
+                    if (iteration == 6) {
+                        v7.play();
+                        iteration = 7;
+                    }
                 }
-                if (addTimeforintro < 940 && addTimeforintro > 850) {
+                if (addTimeforintro < 1020 && addTimeforintro > 900) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("The witnesses say the person was", width / 2, height / 5);
                     text("the evil Wizard Wigglesworth!", width / 2, height / 5 + 50);
+                    if (iteration == 7) {
+                        v8.play();
+                        iteration = 8;
+                    }
                 }
-                if (addTimeforintro < 1050 && addTimeforintro > 960) {
+                if (addTimeforintro < 1220 && addTimeforintro > 1050) {
                     fill("black");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Well, since you have shown your incompetence", width / 2, height / 5);
                     text("I guess I will have to retrieve the supplies", width / 2, height / 5 + 50);
                     text("MYSELF!", width / 2, height / 5 + 100);
+                    if (iteration == 8) {
+                        v9.play();
+                        iteration = 9;
+                    }
                 }
-                if (addTimeforintro < 1150 && addTimeforintro > 1070) {
+                if (addTimeforintro < 1340 && addTimeforintro > 1240) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("But sir! We've heard Wigglesworth is very dangerous!", width / 2, height / 5);
+                    if (iteration == 9) {
+                        v10.play();
+                        iteration = 10;
+                    }
                 }
-                if (addTimeforintro < 1250 && addTimeforintro > 1170) {
+                if (addTimeforintro < 1450 && addTimeforintro > 1360) {
                     fill("black");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Not for me!", width / 2, height / 5);
+                    if (iteration == 10) {
+                        v11.play();
+                        iteration = 11;
+                    }
                 }
-                if (addTimeforintro < 1300 && addTimeforintro > 1270) {
+                if (addTimeforintro < 1540 && addTimeforintro > 1470) {
                     fill("red");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("Well, Be care---", width / 2, height / 5);
+                    if (iteration == 11) {
+                        v12.play();
+                        iteration = 12;
+                    }
                 }
-                if (addTimeforintro < 1370 && addTimeforintro > 1310) {
-                    fill("black");
-                    textSize(40);
-                    textAlign(CENTER, CENTER);
-                    text("Yeah, yeah, Bye", width / 2, height / 5);
+                if (addTimeforintro < 1580 && addTimeforintro > 1530) {
+                    if (addTimeforintro > 1540) {
+                        fill("black");
+                        textSize(40);
+                        textAlign(CENTER, CENTER);
+                        text("Yeah, yeah, Bye", width / 2, height / 5);
+                    }
+                    if (iteration == 12) {
+                        v13.play();
+                        iteration = 13;
+                    }
                 }
             }
-            if (addTimeforintro > 1375 && addTimeforintro < 1480) {
+            if (addTimeforintro > 1590 && addTimeforintro < 1690) {
                 if (addTimeforintro > 1400) {
                     fill("black");
                     textSize(40);
                     textAlign(CENTER, CENTER);
                     text("You want something done right,", width / 2, height / 5);
                     text("Do it yourself", width / 2, height / 5 + 50);
+                    if (iteration == 13) {
+                        v14.play();
+                        iteration = 14;
+                    }
                 }
             }
-            if (addTimeforintro > 1500) {
+            if (addTimeforintro > 1700) {
                 fakebob.changeAnimation("runningright");
                 fakebob.x += 15;
             }
         }
-        if (addTimeforintro >= 1600 || (addTimeforintro >= 65 && keyDown("SPACE"))) {
+        if (addTimeforintro >= 1780 || (addTimeforintro >= 65 && keyDown("SPACE"))) {
             gamestate = "start";
             fakebob.remove();
         }
@@ -536,10 +610,10 @@ function draw() {
                                  "2...........................................................2...........................1..........2..........................................................11........3............2",
                                  "2...........................111111111111....................2......................................2....................................................................3............2",
                                  "2...........................................................2.........................1............2.....................................................111............3............2",
-                                 "2.................1111111....................E..............2.......E..............................2.........E......................................111.................3............2",
+                                 "2.................1111111....................E..............2.........E............................2............E...................................111.................3............2",
                                  "2...........................................................2.................111111...............2....................................................................3............2",
                                  "2......P....................................................2......................................2...................................................................567.....W.....2",
-                                 "21111111111111111111111111111111111111111111111111111111111121111111111111111111111111111111111111121111111111111111111.......1111111111111111111111111111.........1111111111111111112"], "Beginner's Cliffs", false, 0, false, 0);
+                                 "2111111111111111111111111111111111111111111111111111111111112.....1111111111111111111111111111111112......1111111111111.......1111111111111111111111111111.........1111111111111111112"], "Beginner's Cliffs", false, 0, false, 0);
                 }
                 if (levelp == 2) {
                     createLevel(["1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
