@@ -8,6 +8,8 @@
 8 = Middle Flag
 
 E = enemy
+§ = Goo
+F = FlyJay
 W = wood
 G = gold
 H = Horizontal Moving Platform

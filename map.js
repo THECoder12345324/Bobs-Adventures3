@@ -36,6 +36,7 @@ class Map {
         this.realground = [];
         this.doors = [];
         this.poles = [];
+        this.goos = [];
         this.timer = 0;
         this.start = false;
 
@@ -155,6 +156,18 @@ class Map {
                         this.enemies.push(enemy);
                             this.allSprites.push(enemy);
                     }
+                    if (this.map[i][j] == '§') {
+                        var goo = new Goo(j * TILESIZE, i * TILESIZE, 1, 2000, 10);
+                        goo.display();
+                        this.enemies.push(goo);
+                        /*this.goos.push(goo);*/
+                        this.allSprites.push(goo);
+                    }
+                    if (this.map[i][j] == 'F') {
+                        var flyjay = new FlyJay(j * TILESIZE, i * TILESIZE, 1);
+                        this.enemies.push(flyjay);
+                        this.allSprites.push(flyjay);
+                    }
                     if (this.map[i][j] == 'W') {
                         var sprite = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
                         sprite.visible = false;
@@ -180,8 +193,9 @@ class Map {
                         movePlat.addImage(this.moveImg);
                         movePlat.scale = 2.4;
                         var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
-                        groundcollider.visible = false;
+                        //groundcollider.visible = false;
                         groundcolGroup.add(groundcollider);
+                        groundcollider.debug = true;
                         groundGroup.add(movePlat);
                         this.movePlatsH.push(movePlat);
                         this.movePlatsH.push(groundcollider);
@@ -191,8 +205,9 @@ class Map {
                         movePlat.addImage(this.moveImg);
                         movePlat.scale = 2.4;
                         var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
-                        groundcollider.visible = false;
+                        //groundcollider.visible = false;
                         groundcolGroup.add(groundcollider);
+                        groundcollider.debug = true;
                         groundGroup.add(movePlat);
                         this.movePlatsV.push(movePlat);
                         this.movePlatsV.push(groundcollider);
@@ -219,10 +234,13 @@ class Map {
             }
             else {
                 this.enemies[i].sprite.velocityY = 0;
-                this.enemies[i].x = this.enemies[i].sx;
-                this.enemies[i].y = this.enemies[i].sy;
+                this.enemies[i].sprite.x = this.enemies[i].sx;
+                this.enemies[i].sprite.y = this.enemies[i].sy;
             }
         }
+        /*for (var o = 0; o < this.goos.length; o++) {
+            var a = dist(bob.x, bob.y, this.goos[x].)
+        }*/
         for (var j = 0; j < this.materials.length; j++) {
             var b = dist(bob.x, bob.y, this.materials[j].x, this.materials[j].y);
             if (b < width && b < height) {
