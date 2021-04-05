@@ -234,8 +234,10 @@ class Map {
             }
             else {
                 this.enemies[i].sprite.velocityY = 0;
-                this.enemies[i].sprite.x = this.enemies[i].sx;
-                this.enemies[i].sprite.y = this.enemies[i].sy;
+                //this.enemies[i].sprite.x = this.enemies[i].sx;
+                //this.enemies[i].sprite.y = this.enemies[i].sy;
+                this.enemies[i].sprite.x = lerp(this.enemies[i].sprite.x, this.enemies[i].sx, 0.05);
+                this.enemies[i].sprite.y = lerp(this.enemies[i].sprite.y, this.enemies[i].sy, 0.05);
             }
         }
         /*for (var o = 0; o < this.goos.length; o++) {
