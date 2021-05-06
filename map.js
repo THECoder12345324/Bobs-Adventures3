@@ -1,5 +1,5 @@
 class Map {
-    constructor(array, title, autoscrollerx, autoxspeed, autoscrollery, autoyspeed) {
+    constructor(array, title, autoscrollerx, autoxspeed, autoscrollery, autoyspeed, music, bossmusic) {
         this.map = array;
         this.title = title;
         this.autoscrollerx = autoscrollerx;
@@ -21,7 +21,13 @@ class Map {
         this.images = [this.image1, this.image2, this.image3];
         this.moveImg = loadImage('img/heavymetal.png');
 
+        this.musicFile = loadSound(music);
+
+        this.danana = loadSound(bossmusic);
+
         this.x = 0;
+
+        this.tick = 0;
 
         this.lowest = 0;
         this.farthest = 0;
@@ -37,6 +43,7 @@ class Map {
         this.doors = [];
         this.poles = [];
         this.goos = [];
+        this.boss = [];
         this.timer = 0;
         this.start = false;
 
@@ -216,6 +223,10 @@ class Map {
                         var door = new Door(j * TILESIZE, i * TILESIZE, this.doorImg, 2.4);
                         this.doors.push(door);
                     }
+                    if (this.map[i][j] == '☺') {
+                        var danny = new Danny(j * TILESIZE, i * TILESIZE, 5, 2.3);
+                        this.boss.push(danny);
+                    }
                 }
             }
     }
@@ -274,10 +285,28 @@ class Map {
             }
         }
         for (var m = 0; m < this.doors.length; m++) {
-            var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
-            if (d < width && d < height) {
-                this.doors[m].display();
+            //var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
+            this.doors[m].display();
+            if ((bob.x > this.doors[m].sprite.x + 40) && this.tick == 0) {
+                this.tick = 1;
+                for (var i = 0; i < this.doors.length; i++) {
+                    this.doors[i].visible = true;
+                }
             }
+            for (var i = 0; i < this.boss.length; i++) {
+                if (this.boss[i].defeated == true) {
+                    for (var t = 0; t < this.doors.length; t++) {
+                        this.doors[t].visible = false;
+                    }
+                    this.boss[i].sprite.destroy();
+                    bossMusic.stop();
+                    bossm = "off";
+                    musicloop = 0;
+                }
+            }
+        }
+        for (var n = 0; n < this.boss.length; n++) {
+            this.boss[n].display();
         }
         this.timer += 1;
     }
@@ -288,6 +317,12 @@ class Map {
         enemyGroup.removeSprites();
         materialGroup.removeSprites();
         groundcolGroup.removeSprites();
+        for (var i = 0; i < this.boss.length; i++) {
+            this.boss[i].sprite.remove();
+        }
+        for (var j = 0; j < this.doors.length; j++) {
+            this.doors[j].sprite.remove();
+        }
         bob.remove();
     }
 }

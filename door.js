@@ -14,7 +14,7 @@ class Door {
         }
         else {
             this.sprite.visible = true;
-            this.sprite.collide(bob);
+            bob.collide(this.sprite);
         }
     }
 }
