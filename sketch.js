@@ -70,6 +70,9 @@ var addscore = 0;
 var answered1 = false;
 var bonus1 = false;
 
+var bgMusic1;
+var castleImg;
+
 function preload() {
     runrightAnimation = loadAnimation("img/run1.png", "img/run2.png", 
                                     "img/run3.png", "img/run4.png", 
