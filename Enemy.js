@@ -112,13 +112,11 @@ class Danny {
         this.sprite.addAnimation("daze", image);
         this.sprite.addAnimation("spin", dannyAnimation);
         this.sprite.scale = scl;
-        this.sprite.debug = true;
         this.defeated = false;
         this.hit = false;
         this.life = life;
         this.timer = 0;
         this.xmove = 0;
-        this.enemies = [];
     }
     display() {
         this.timer += 1;
@@ -149,14 +147,14 @@ class Danny {
                         this.sprite.x -= 15;
                     }
                     if (this.life == 3) {
-                        this.sprite.x -= 20;
+                        this.sprite.x -= 17;
                     }
                     if (this.life == 2) {
                         
-                        this.sprite.x -= 20;
+                        this.sprite.x -= 17;
                     }
                     if (this.life == 1) {
-                        this.sprite.x -= 20;
+                        this.sprite.x -= 17;
                     }
                 }
                 else {
@@ -167,13 +165,13 @@ class Danny {
                         this.sprite.x += 15;
                     }
                     if (this.life == 3) {
-                        this.sprite.x += 20;
+                        this.sprite.x += 17;
                     }
                     if (this.life == 2) {
-                        this.sprite.x += 25;
+                        this.sprite.x += 17;
                     }
                     if (this.life == 1) {
-                        this.sprite.x += 30;
+                        this.sprite.x += 17;
                     }
                 }
                 this.sprite.velocityY += 0.8;
@@ -241,10 +239,6 @@ class Danny {
                     }
                 }
                 this.sprite.velocityY += 0.8;
-
-                for (var i = 0; i < this.enemies.length; i++) {
-                    this.enemies[i].display();
-                }
             }
         }
         if (this.life == 0) {
