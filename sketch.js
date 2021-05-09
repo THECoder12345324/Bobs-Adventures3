@@ -97,7 +97,7 @@ function preload() {
     pauseImg = loadImage("img/Pause.png");
 
     mountainImg = loadImage("img/mountainbackground.png");
-    castleImg = loadImage("img/Castlebg.png");
+    castleImg = loadImage("img/castlebg.png");
 
     v1 = loadSound("snd/Recording1.m4a");
     v2 = loadSound("snd/Recording2.m4a");
@@ -113,7 +113,7 @@ function preload() {
     v12 = loadSound("snd/Recording12.m4a");
     v13 = loadSound("snd/Recording13.m4a");
     v14 = loadSound("snd/Recording14.m4a");
-    bgMusic1 = loadSound("snd/BgMusic1.wav");
+    bgMusic1 = loadSound("snd/bgMusic1.wav");
 
     bossMusic = loadSound("snd/danana.wav")
     death = loadSound("snd/death.wav");
