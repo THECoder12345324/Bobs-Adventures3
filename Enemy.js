@@ -106,7 +106,7 @@ class FlyJay {
 }
 
 class Danny {
-    constructor(x, y, life, scl) {
+    constructor(x, y, life, scl, ylim, xlim) {
         var image = loadAnimation("img/DANNY-removebg-preview.png");
         this.sprite = createSprite(x, y);
         this.sprite.addAnimation("daze", image);
@@ -117,133 +117,141 @@ class Danny {
         this.life = life;
         this.timer = 0;
         this.xmove = 0;
+        this.ylim = ylim;
+        this.xlim = xlim;
+        this.activate = false;
     }
     display() {
         this.timer += 1;
-        if (this.defeated == false) {
-            if (this.life == 5) {
-                bossMusic.rate(0.2);
-            }
-            if (this.life == 4) {
-                bossMusic.rate(0.4);
-            }
-            if (this.life == 3) {
-                bossMusic.rate(0.6);
-            }
-            if (this.life == 2) {
-                bossMusic.rate(0.8);
-            }
-            if (this.life == 1) {
-                bossMusic.rate(1);
-            }
-            if (this.timer < 240) {
-                this.sprite._rotation = 0;
-                this.sprite.changeAnimation("spin");
-                if (bob.x < this.sprite.x) {
-                    if (this.life == 5) {
-                        this.sprite.x -= 10;
-                    }
-                    if (this.life == 4) {
-                        this.sprite.x -= 15;
-                    }
-                    if (this.life == 3) {
-                        this.sprite.x -= 17;
-                    }
-                    if (this.life == 2) {
-                        
-                        this.sprite.x -= 17;
-                    }
-                    if (this.life == 1) {
-                        this.sprite.x -= 17;
-                    }
+        if (bob.y < this.ylim && bob.x > this.xlim) {
+            this.activate = true;
+        }
+        if (this.activate == true) {
+            if (this.defeated == false) {
+                if (this.life == 5) {
+                    bossMusic.rate(0.2);
                 }
-                else {
-                    if (this.life == 5) {
-                        this.sprite.x += 10;
-                    }
-                    if (this.life == 4) {
-                        this.sprite.x += 15;
-                    }
-                    if (this.life == 3) {
-                        this.sprite.x += 17;
-                    }
-                    if (this.life == 2) {
-                        this.sprite.x += 17;
-                    }
-                    if (this.life == 1) {
-                        this.sprite.x += 17;
-                    }
+                if (this.life == 4) {
+                    bossMusic.rate(0.4);
                 }
-                this.sprite.velocityY += 0.8;
-
-                if (bob.isTouching(this.sprite)) {
-                    tick = 0;
-                    deadx = bob.y - (warpthingyy) - 900;
-                    gamestate = "dead";
-                    bgMusic1.stop();
-                    bossMusic.stop();
-                    bossm = "off";
-                    musicloop = 0;
-                    death.play();
+                if (this.life == 3) {
+                    bossMusic.rate(0.6);
                 }
-            }
-            if (this.timer == 240) {
-                this.xmove = 0;
-            }
-            if (this.timer >= 240) {
-                this.sprite.changeAnimation("daze");
-                if (bob.isTouching(this.sprite)) {
-                    if (this.hit == false) {
-                        this.life -= 1;
-                        /*if (this.life == 2) {
-                            for (var i = 0; i < 5; i++) {
-                                enemy = new Enemy(map.doors[0].sprite.x + i * 30, bob.y, map.enemy1img, 1)
-                                this.enemies.push(enemy);
-                            }
-                        }*/
-                    }
-                    this.hit = true;
+                if (this.life == 2) {
+                    bossMusic.rate(0.8);
                 }
-                else if (this.timer > 300 && this.hit == false) {
-                    this.timer = 0;
+                if (this.life == 1) {
+                    bossMusic.rate(1);
                 }
-
-
-
-                if (this.hit == true) {
+                if (this.timer < 240) {
+                    this.sprite._rotation = 0;
+                    this.sprite.changeAnimation("spin");
                     if (bob.x < this.sprite.x) {
-                        this.xmove += 1;
-                        if (this.xmove < 60) {
-                            this.sprite.x += 8;
+                        if (this.life == 5) {
+                            this.sprite.x -= 10;
                         }
-                        if (this.sprite._rotation < 90) {
-                            this.sprite._rotation += 8;
+                        if (this.life == 4) {
+                            this.sprite.x -= 15;
                         }
-                        if (this.xmove > 100) {
-                            this.timer = 0;
-                            this.hit = false;
+                        if (this.life == 3) {
+                            this.sprite.x -= 17;
+                        }
+                        if (this.life == 2) {
+                            
+                            this.sprite.x -= 17;
+                        }
+                        if (this.life == 1) {
+                            this.sprite.x -= 17;
                         }
                     }
-                    if (bob.x > this.sprite.x) {
-                        this.xmove += 1;
-                        if (this.xmove < 60) {
-                            this.sprite.x -= 8;
+                    else {
+                        if (this.life == 5) {
+                            this.sprite.x += 10;
                         }
-                        if (this.sprite._rotation > -90) {
-                            this.sprite._rotation -= 8;
+                        if (this.life == 4) {
+                            this.sprite.x += 15;
                         }
-                        if (this.xmove > 100) {
-                            this.timer = 0;
-                            this.hit = false;
+                        if (this.life == 3) {
+                            this.sprite.x += 17;
                         }
+                        if (this.life == 2) {
+                            this.sprite.x += 17;
+                        }
+                        if (this.life == 1) {
+                            this.sprite.x += 17;
+                        }
+                    }
+                    this.sprite.velocityY += 0.8;
+
+                    if (bob.isTouching(this.sprite)) {
+                        tick = 0;
+                        deadx = bob.y - (warpthingyy) - 900;
+                        gamestate = "dead";
+                        bgMusic1.stop();
+                        bossMusic.stop();
+                        bossm = "off";
+                        musicloop = 0;
+                        death.play();
                     }
                 }
-                this.sprite.velocityY += 0.8;
+                if (this.timer == 240) {
+                    this.xmove = 0;
+                }
+                if (this.timer >= 240) {
+                    this.sprite.changeAnimation("daze");
+                    if (bob.isTouching(this.sprite)) {
+                        if (this.hit == false) {
+                            this.life -= 1;
+                            /*if (this.life == 2) {
+                                for (var i = 0; i < 5; i++) {
+                                    enemy = new Enemy(map.doors[0].sprite.x + i * 30, bob.y, map.enemy1img, 1)
+                                    this.enemies.push(enemy);
+                                }
+                            }*/
+                        }
+                        this.hit = true;
+                    }
+                    else if (this.timer > 300 && this.hit == false) {
+                        this.timer = 0;
+                    }
+
+
+
+                    if (this.hit == true) {
+                        if (bob.x < this.sprite.x) {
+                            this.xmove += 1;
+                            if (this.xmove < 60) {
+                                this.sprite.x += 8;
+                            }
+                            if (this.sprite._rotation < 90) {
+                                this.sprite._rotation += 8;
+                            }
+                            if (this.xmove > 100) {
+                                this.timer = 0;
+                                this.hit = false;
+                            }
+                        }
+                        if (bob.x > this.sprite.x) {
+                            this.xmove += 1;
+                            if (this.xmove < 60) {
+                                this.sprite.x -= 8;
+                            }
+                            if (this.sprite._rotation > -90) {
+                                this.sprite._rotation -= 8;
+                            }
+                            if (this.xmove > 100) {
+                                this.timer = 0;
+                                this.hit = false;
+                            }
+                        }
+                    }
+                    this.sprite.velocityY += 0.8;
+                }
             }
+            if (this.life == 0) {
+                this.defeated = true;
+            }
+            this.sprite.collide(groundGroup);
         }
-        if (this.life == 0) {
-            this.defeated = true;
-        }
-        this.sprite.collide(groundGroup);
     }
 }

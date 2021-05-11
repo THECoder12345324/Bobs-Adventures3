@@ -13,7 +13,7 @@ var lo = 0;
 
 var iteration = 0;
 var jumpcount = 0;
-var level = 1;
+var level = 6;
 var warpthingy = 0;
 var warpthingyy = 0;
 var a = 0;
@@ -40,6 +40,8 @@ var y4;
 var x5;
 var y5;
 
+var x = 0;
+
 var woodCount = 0;
 var addWood = 0;
 
@@ -52,7 +54,7 @@ var addGold = 0;
 var lerpr = false;
 var lerpl = false;
 
-var levelp = 1;
+var levelp = 6;
 
 var phoneangle = 0;
 var phonedir = 1;
@@ -949,13 +951,21 @@ function draw() {
                 else {
                     bob.changeAnimation("standing");
                 }
-
                 /*if(keyWentDown("SPACE")) {
                     bob.velocityY -= 13;
                 }*/
 
                 if (map.autoscrollerx == true) {
-                    camera.position.x += map.axspeed;
+                    if (bob.x > camera.position.x + width / 4) {
+                        x = 10;
+                    }
+                    if (bob.x < camera.position.x - width / 4) {
+                        x = 0;
+                    }
+                    else {
+                        x = 5;
+                    }
+                    camera.position.x += map.axspeed + x;
                     if (bob.x + 30 + width / 2 < camera.position.x) {
                         gamestate = "start";
                         map.destroy();

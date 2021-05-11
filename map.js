@@ -226,7 +226,7 @@ class Map {
                         this.doors.push(door);
                     }
                     if (this.map[i][j] == '☺') {
-                        var danny = new Danny(j * TILESIZE, i * TILESIZE, 5, 2.3);
+                        var danny = new Danny(j * TILESIZE, i * TILESIZE, 5, 2.3, 830, 3600);
                         this.boss.push(danny);
                     }
                 }
@@ -235,7 +235,6 @@ class Map {
 
     update() {
         this.switch += 1;
-        console.log(this.lowest);
         if (this.switch >= 30) {
             this.dir *= -1;
             this.switch = 0;
@@ -289,10 +288,11 @@ class Map {
         for (var m = 0; m < this.doors.length; m++) {
             //var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
             this.doors[m].display();
-            if ((bob.x > this.doors[m].sprite.x + 40) && this.tick == 0) {
+            if ((bob.x > this.doors[m].sprite.x + 40) && this.tick == 0 && bob.y < 830) {
                 this.tick = 1;
                 for (var i = 0; i < this.doors.length; i++) {
                     this.doors[i].visible = true;
+                    console.log(bob.x);
                 }
             }
             for (var i = 0; i < this.boss.length; i++) {
