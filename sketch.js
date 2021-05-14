@@ -13,7 +13,7 @@ var lo = 0;
 
 var iteration = 0;
 var jumpcount = 0;
-var level = 6;
+var level = 1;
 var warpthingy = 0;
 var warpthingyy = 0;
 var a = 0;
@@ -54,7 +54,9 @@ var addGold = 0;
 var lerpr = false;
 var lerpl = false;
 
-var levelp = 6;
+var levelp = 1;
+
+var ptimer = 0;
 
 var phoneangle = 0;
 var phonedir = 1;
@@ -827,6 +829,7 @@ function draw() {
             map.showTitle();
         }
         if (map.timer == 60) {
+            ptimer = 0;
             camera.zoom = 1;
             camera.position.x = width / 2;
             camera.position.y = height / 2;
@@ -863,6 +866,14 @@ function draw() {
             pop();
 
             if (pause == false) {
+
+                ptimer -= 1;
+
+                if ((keyIsPressed == true) && ((key == 'p') || (key == 'P')) && ptimer < 0) {
+                    pause = true;
+                    ptimer = 0;
+                    ptimer += 1;
+                }
 
                 groundcheck += 1;
                 
@@ -1056,19 +1067,38 @@ function draw() {
                     }
                     map.destroy();
                 }
+                for (var i = 0; i < map.doors.length; i++) {
+                    if (map.doors[i].visible == true) {
+                        textSize(35);
+                        fill('red');
+                        textAlign(CENTER, CENTER);
+                        text("Boss Life: " + map.boss[0].life, camera.position.x + width / 2 - 150, camera.position.y - height / 2 + 100)
+                    }
+                }
             }
             else {
-                rectMode(CENTER);
-                rect(width / 2, height / 2, width, height, 150);
-            }
-
-            for (var i = 0; i < map.doors.length; i++) {
-                if (map.doors[i].visible == true) {
-                    textSize(35);
-                    fill('red');
-                    textAlign(CENTER, CENTER);
-                    text("Boss Life: " + map.boss[0].life, camera.position.x + width / 2 - 150, camera.position.y - height / 2 + 100)
+                ptimer += 1;
+                if ((keyIsPressed == true) && (key == 'p') && ptimer > 60) {
+                    pause = false;
+                    ptimer = 60;
                 }
+                drawSprites();
+                rectMode(CENTER);
+                bob.velocityY = 0;
+                camera.zoom = 1;
+                fill(0, 230);
+                rect(camera.position.x, camera.position.y, width, height);
+                fill(255, 255, 255);
+                textAlign(CENTER, CENTER);
+                textSize(40);
+                text("PAUSE MENU", camera.position.x, camera.position.y - height / 4);
+                textSize(35);
+                //text("STATS", camera.position.x - width / 4, camera.position.y - height / 6);
+                text("Wood: " + woodCount, camera.position.x, camera.position.y - height / 8);
+                text("Gold: " + goldCount, camera.position.x, camera.position.y);
+                text("Level: " + level, camera.position.x, camera.position.y + (height / 8));
+                text("Press p to unpause", camera.position.x, camera.position.y + ((3 * height) / 8))
+            
             }
         }
     }
@@ -1170,7 +1200,9 @@ function draw() {
             text(addscore, bob.x, bob.y - 100);
         }
     }
-    drawSprites();
+    if (pause == false) {
+        drawSprites();
+    }
 }
 
 function createLevel (array, title, autox, autoxs, autoy, autoys) {
