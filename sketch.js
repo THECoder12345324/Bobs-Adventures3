@@ -121,9 +121,12 @@ function preload() {
     v13 = loadSound("snd/Recording13.m4a");
     v14 = loadSound("snd/Recording14.m4a");
     bgMusic1 = loadSound("snd/BgMusic1.wav");
-
+    telephone = loadSound("snd/telephone.wav");
     bossMusic = loadSound("snd/danana.wav")
     death = loadSound("snd/death.wav");
+
+    allSound = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, 
+        bgMusic1, telephone, bossMusic, death];
 }
 
 function setup() {
@@ -239,6 +242,7 @@ function draw() {
                     if (iteration == 1) {
                         v2.play();
                         iteration = 2;
+                        telephone.loop();
                     }
                 }
             }
@@ -261,6 +265,7 @@ function draw() {
                 fakebob.x += 10;
             }
             if (addTimeforintro >= 400 && addTimeforintro <= 1585) {
+                telephone.stop();
                 fakebob.changeAnimation("standing");
                 push();
                 imageMode(CENTER);
@@ -1061,6 +1066,10 @@ function draw() {
                 }
                 if (bob.y > (map.lowest + (TILESIZE * 10))) {
                     gamestate = "start";
+                    for (var i = 0; i < allSound.length; i++) {
+                        allSound[i].stop();
+                    }
+                    death.play();
                     if (level == 1) {
                         pin.x = x1;
                         pin.y = y1;
