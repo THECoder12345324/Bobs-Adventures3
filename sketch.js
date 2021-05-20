@@ -11,6 +11,12 @@ var groundcheck;
 var la = 0;
 var lo = 0;
 
+var grid;
+var tilesize;
+
+var cols = 0;
+var rows = 0;
+
 var iteration = 0;
 var jumpcount = 0;
 var level = 1;
@@ -839,8 +845,12 @@ function draw() {
                                  "1..............................................................................................2...........................................................................................................3............1",
                                  "1..............................................................................................2...........................................................................................................3............1",
                                  "1.....................................2........................................................2...........................................................................................................3............1",
-                                 "1.....P.................2.............2..........................................................................................1.................1............................1.........................567.....W.....1",
+                                 "1.......................2.............2..........................................................................................1.................1............................1....................P....567.....W.....1",
                                  "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"], "FlyJay Terrors", false, 0, false, 0)
+                }
+                if (levelp == 8) {
+                    gamestate = "castle";
+                    draw_grid(40);
                 }
             }
         }
@@ -1222,6 +1232,10 @@ function draw() {
             else {
                 level += 1;
             }
+
+            if (level == 8) {
+                levelp = 8;
+            }
             map.destroy();
             if (level != 5) {
                 lerpr = true;
@@ -1232,8 +1246,54 @@ function draw() {
             text(addscore, bob.x, bob.y - 100);
         }
     }
+    if (gamestate == "castle") {
+        background(0);
+        camera.zoom = 1;
+        pin.hide();
+        camera.position.x = width / 2;
+        camera.position.y = height / 2;
+        for (let i = 0; i < round(cols); i++) {
+            for (let j = 0; j < round(rows); j++) {
+                x = i * tilesize;
+                y = j * tilesize;
+                if (grid[i][j] == 0) {
+                    fill(255);
+                    rectMode(CENTER);
+                    rect(x, y, tilesize - 2, tilesize - 2);
+                }
+                if (grid[i][j] == 1) {
+                    fill(0);
+                    rectMode(CENTER);
+                    rect(x, y, tilesize - 2, tilesize - 2);
+                }
+    
+    
+                //rect(x, y, tilesize - 1, tilesize - 1);
+            }
+        }
+    }
     if (pause == false) {
         drawSprites();
+    }
+}
+
+function Make2dArray(cols, rows) {
+    let arr = new Array(cols);
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = new Array(rows);
+    }
+    return arr;
+}
+
+function draw_grid (size) {
+    tilesize = size * (displayWidth / 1920) * (displayHeight / 1080);
+    cols = round(width / tilesize);
+    rows = round(height / tilesize);
+    grid = Make2dArray(cols, rows);
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j] = 0;
+        }
     }
 }
 
@@ -1264,4 +1324,16 @@ function createLevel (array, title, autox, autoxs, autoy, autoys) {
         pin.y = y7;
     }
     console.log(level);
+}
+
+function mousePressed() {
+    console.log("PRESSED");
+    for (let i = 0; i < round(cols); i++) {
+        for (let j = 0; j < round(rows); j++) {
+            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+            if (d < (tilesize)) {
+                grid[i][j] = 1;
+            }
+        }
+    }
 }
