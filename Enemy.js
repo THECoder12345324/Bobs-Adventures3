@@ -112,6 +112,7 @@ class Danny {
         this.sprite.addAnimation("daze", image);
         this.sprite.addAnimation("spin", dannyAnimation);
         this.sprite.scale = scl;
+        this.sprite.setCollider("rectangle", 0, 0, 130, 150);
         this.defeated = false;
         this.hit = false;
         this.life = life;
