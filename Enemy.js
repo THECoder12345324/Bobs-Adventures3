@@ -152,16 +152,16 @@ class Danny {
                             this.sprite.x -= 10;
                         }
                         if (this.life == 4) {
-                            this.sprite.x -= 15;
+                            this.sprite.x -= 12;
                         }
                         if (this.life == 3) {
-                            this.sprite.x -= 17;
+                            this.sprite.x -= 12;
                         }
                         if (this.life == 2) { 
                             this.sprite.x -= 12;
                         }
                         if (this.life == 1) {
-                            this.sprite.x -= 14;
+                            this.sprite.x -= 12;
                         }
                     }
                     else {
