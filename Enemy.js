@@ -157,12 +157,11 @@ class Danny {
                         if (this.life == 3) {
                             this.sprite.x -= 17;
                         }
-                        if (this.life == 2) {
-                            
-                            this.sprite.x -= 17;
+                        if (this.life == 2) { 
+                            this.sprite.x -= 12;
                         }
                         if (this.life == 1) {
-                            this.sprite.x -= 17;
+                            this.sprite.x -= 14;
                         }
                     }
                     else {
