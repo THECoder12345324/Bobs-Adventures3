@@ -223,7 +223,7 @@ function draw() {
 
             if (addTimeforintro < 200) {
                 fakebob.changeAnimation("standing");
-                fakebob.x = ((displayWidth - 100) / 6.7407);
+                fakebob.x = ((displayWidth - 100) / 6.7407) * (displayWidth / 1920);
                 fakebob.y = ((displayHeight - 100) / 1.4475);
                 fakebob._rotation = -90;
             }
