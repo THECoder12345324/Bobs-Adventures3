@@ -150,7 +150,7 @@ function setup() {
     playButton.style("font-size", 40 + "pt");
     playButton.style("border-radius", 25);
     playButton.style("background-color", "gold");
-    playButton.position(width / 2 - 100, height / 2 + 200);
+    playButton.position((width / 2 - 100) * (displayWidth / 1920), (height / 2 + 200) * (displayHeight / 1080));
 }
 
 function draw() {
@@ -168,8 +168,8 @@ function draw() {
         textSize(105);
         fill(255, 215, 0);
         textAlign(CENTER, CENTER);
-        text("BOB'S", width / 2, height / 2 - 350);
-        text("ADVENTURES", width / 2, height / 2 - 250);
+        text("BOB'S", (width / 2) * (displayWidth / 1920), (height / 2 - 350) * (displayHeight / 1080));
+        text("ADVENTURES", (width / 2) * (displayWidth / 1920), (height / 2 - 250) * (displayHeight / 1080));
         playButton.mousePressed(function () {
             gamestate = "intro";
             fakebob = createSprite(0, 0, 40, 40);
