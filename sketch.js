@@ -173,7 +173,7 @@ function draw() {
         playButton.mousePressed(function () {
             gamestate = "intro";
             fakebob = createSprite(0, 0, 40, 40);
-            var fakescl = (width / height) / 1.2;
+            var fakescl = (displayWidth / 1920) * (displayHeight / 1080);
             fakebob.addAnimation("crouching", crouching);
             fakebob.addAnimation("crouching2", crouching2)
             fakebob.addAnimation("runningright", runrightAnimation);
