@@ -314,8 +314,8 @@ class Map {
             if (this.doors[m].visible == true) {
                 if (this.boss[0].life == 2) {
                     if (this.aaaaaarg == 0) {
-                        for (var i = 0; i < 5; i++) {
-                            var enemy = new Enemy(this.doors[0].sprite.x - (i * 400), bob.y, this.enemy1Img, 1);
+                        for (var i = 0; i < 2; i++) {
+                            var enemy = new Enemy(this.doors[0].sprite.x - (i * 1200), bob.y, this.enemy1Img, 1);
                             enemy.display();
                             this.enemies.push(enemy);
                             this.allSprites.push(enemy);
