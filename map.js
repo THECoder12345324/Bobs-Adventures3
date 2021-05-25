@@ -89,7 +89,7 @@ class Map {
                             this.lowest = i * TILESIZE + 1;
                         }
                         ground.addImage(random(this.images));
-                        ground.scale = 2.4 * (displayWidth / 1920) * (displayHeight / 1080);
+                        ground.scale = 2.4;
                         //ground.shapeColor = "green";
                         groundGroup.add(ground);
                         groundcolGroup.add(groundcollider);
