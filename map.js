@@ -46,6 +46,7 @@ class Map {
         this.poles = [];
         this.goos = [];
         this.boss = [];
+        this.boss2 = [];
         this.timer = 0;
         this.start = false;
 
@@ -57,7 +58,6 @@ class Map {
         camera.zoom = 1;
         camera.position.x = width / 2;
         camera.position.y = height / 2;
-        console.log(this.timer);
         background(0, 0, 0);
         textSize(40);
         fill(255, 215, 0);
@@ -83,20 +83,17 @@ class Map {
                     }
                     if (this.map[i][j] == '1') {
                         var ground = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
-                        var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2), TILESIZE, 2);
+                        var groundcollider = createSprite(j * TILESIZE, i * TILESIZE - (TILESIZE / 2) - 5, TILESIZE, 2);
                         groundcollider.visible = false;
                         if (i * TILESIZE > this.lowest) {
                             this.lowest = i * TILESIZE + 1;
                         }
-                        var x = random(0, 2);
-                        var image = this.images[x];
                         ground.addImage(random(this.images));
-                        ground.scale = 2.4;
+                        ground.scale = 2.4 * (displayWidth / 1920) * (displayHeight / 1080);
                         //ground.shapeColor = "green";
                         groundGroup.add(ground);
                         groundcolGroup.add(groundcollider);
                         this.allSprites.push(ground);
-                        console.log("Ground");
                     }
                     if (this.map[i][j] == '2') {
                         var ground = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
@@ -109,7 +106,6 @@ class Map {
                         ground.scale = 2.4;
                         groundGroup.add(ground);
                             this.allSprites.push(ground);
-                        console.log("Ground");
                     }
                     if (this.map[i][j] == '3') {
                         var pole = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
@@ -229,6 +225,10 @@ class Map {
                         var danny = new Danny(j * TILESIZE, i * TILESIZE, 5, 2.3, 830, 3600);
                         this.boss.push(danny);
                     }
+                    if (this.map[i][j] == '☻') {
+                        var wiggle = new WIGGLE(j * TILESIZE, i * TILESIZE, 5, 3);
+                        this.boss2.push(wiggle);
+                    }
                 }
             }
     }
@@ -288,11 +288,20 @@ class Map {
         for (var m = 0; m < this.doors.length; m++) {
             //var d = dist (bob.x, bob.y, this.doors[i].sprite.x, this.doors[i].sprite.y);
             this.doors[m].display();
-            if ((bob.x > this.doors[m].sprite.x + 40) && this.tick == 0 && bob.y < 830) {
-                this.tick = 1;
-                for (var i = 0; i < this.doors.length; i++) {
-                    this.doors[i].visible = true;
-                    console.log(bob.x);
+            if (level == 5) {
+                if ((bob.x > this.doors[m].sprite.x + 40) && this.tick == 0 && bob.y < 830) {
+                    this.tick = 1;
+                    for (var i = 0; i < this.doors.length; i++) {
+                        this.doors[i].visible = true;
+                    }
+                }
+            }
+            if (level == 10) {
+                if (bob.x > this.doors[m].sprite.x + 40 && this.tick == 0) {
+                    this.tick = 1;
+                    for (var i = 0; i < this.doors.length; i++) {
+                        this.doors[i].visible = true;
+                    }
                 }
             }
             for (var i = 0; i < this.boss.length; i++) {
@@ -306,21 +315,38 @@ class Map {
                     musicloop = 0;
                 }
             }
+            for (var j = 0; j < this.boss2.length; j++) {
+                if (this.boss2[j].defeated == true) {
+                    for (var t = 0; t < this.doors.length; t++) {
+                        this.doors[t].visible = false;
+                    }
+                    this.boss2[j].sprite.destroy();
+                    bossMusic.stop();
+                    bossm = "off";
+                    musicloop = 0;
+                }
+            }
         }
         for (var n = 0; n < this.boss.length; n++) {
             this.boss[n].display();
         }
+        for (var o = 0; o < this.boss2.length; o++) {
+            this.boss2[o].start();
+        }
+
         for (var m = 0; m < this.doors.length; m++) {
             if (this.doors[m].visible == true) {
-                if (this.boss[0].life == 2) {
-                    if (this.aaaaaarg == 0) {
-                        for (var i = 0; i < 2; i++) {
-                            var enemy = new Enemy(this.doors[0].sprite.x - (i * 1200), bob.y, this.enemy1Img, 1);
-                            enemy.display();
-                            this.enemies.push(enemy);
-                            this.allSprites.push(enemy);
+                if (level == 5) {
+                    if (this.boss[0].life == 2) {
+                        if (this.aaaaaarg == 0) {
+                            for (var i = 0; i < 2; i++) {
+                                var enemy = new Enemy(this.doors[0].sprite.x - (i * 1200), bob.y, this.enemy1Img, 1);
+                                enemy.display();
+                                this.enemies.push(enemy);
+                                this.allSprites.push(enemy);
+                            }
+                            this.aaaaaarg = 1;
                         }
-                        this.aaaaaarg = 1;
                     }
                 }
             }
@@ -336,6 +362,12 @@ class Map {
         groundcolGroup.removeSprites();
         for (var i = 0; i < this.boss.length; i++) {
             this.boss[i].sprite.remove();
+        }
+        for (var k = 0; k < this.boss2.length; k++) {
+            this.boss2[k].sprite.remove();
+            if (this.boss2[k].shield) {
+                this.boss2[k].shield.remove();
+            }
         }
         for (var j = 0; j < this.doors.length; j++) {
             this.doors[j].sprite.remove();
