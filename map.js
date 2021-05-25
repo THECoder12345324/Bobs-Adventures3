@@ -193,6 +193,16 @@ class Map {
                             this.allSprites.push(sprite);
                         this.score = 'G';
                     }
+                    if (this.map[i][j] == 'S') {
+                        var sprite = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
+                        sprite.visible = false;
+                        var stone = new Material('S', j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
+                        stone.display();
+                        this.materials.push(stone);
+                        materialGroup.add(sprite);
+                            this.allSprites.push(sprite);
+                        this.score = 'S';
+                    }
                     if (this.map[i][j] == 'H') {
                         var movePlat = createSprite(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
                         movePlat.addImage(this.moveImg);

@@ -1,7 +1,8 @@
 class Material {
     constructor(type, x, y, w, h) {
         this.woodImg = loadImage("img/Wood.png");
-        this.goldImg = loadImage("img/gold.png")
+        this.goldImg = loadImage("img/gold.png");
+        this.stoneImg = loadImage("img/stone.png");
         this.type = type;
         this.x = x;
         this.y = y;
@@ -19,6 +20,11 @@ class Material {
             imageMode(CENTER);
             image(this.goldImg, this.x, this.y, this.w, this.h);
             this.score = 10;
+        }
+        if (this.type == 'S') {
+            imageMode(CENTER);
+            image(this.stoneImg, this.x, this.y, this.w, this.h);
+            this.score = 25;
         }
     }
 }
