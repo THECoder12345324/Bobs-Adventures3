@@ -124,6 +124,10 @@ function preload() {
 
     pauseImg = loadImage("img/Pause.png");
 
+    wbuildImg = loadImage("img/woodbuild.png");
+    sbuildImg = loadImage("img/stonebuild.png");
+    gbuildImg = loadImage("img/goldbuild.png");
+
     mountainImg = loadImage("img/mountainbackground.png");
     castleImg = loadImage("img/Castlebg.png");
 
@@ -162,6 +166,21 @@ function setup() {
     playButton.style("border-radius", 25);
     playButton.style("background-color", "gold");
     playButton.position((width / 2 - 100) * (displayWidth / 1920), (height / 2 + 200) * (displayHeight / 1080));
+
+    menuButton = createButton("CONTROLS");
+    menuButton.size(200, 100);
+    menuButton.style("font-size", 25 + "pt");
+    menuButton.style("border-radius", 25);
+    menuButton.style("background-color", "gold");
+    menuButton.position((width / 2 - 100) * (displayWidth / 1920), (height / 2 + 50) * (displayHeight / 1080));
+
+    backButton = createButton("BACK");
+    backButton.size(200, 100);
+    backButton.style("font-size", 40 + "pt");
+    backButton.style("border-radius", 25);
+    backButton.style("background-color", "gold");
+    backButton.position((width / 2 - 100) * (displayWidth / 1920), (height / 2 + 50) * (displayHeight / 1080));
+    backButton.hide();
 }
 
 function draw() {
@@ -206,6 +225,31 @@ function draw() {
             fakebob.addAnimation("standing", bobImage);
             fakebob.scale = 1.55 * fakescl;
             playButton.hide();
+            menuButton.hide();
+        })
+
+        menuButton.mousePressed(function () {
+            gamestate = "menu";
+            menuButton.hide();
+            playButton.hide();
+            backButton.show();
+        })
+    }
+
+    if (gamestate == "menu") {
+        textSize(35);
+        textAlign(CENTER, CENTER);
+        fill("red");
+        text("Move Bob with the arrow keys", width / 2, 40);
+        text("Run with shift", width / 2, 140);
+        text("Enter levels by pressing Enter", width / 2, 240);
+        text("Get as much materials as you can! (You'll need them later)", width / 2, 340);
+        text("Good Luck!", width / 2, 440);
+        backButton.mousePressed(function () {
+            menuButton.show();
+            playButton.show();
+            backButton.hide();
+            gamestate = "title";
         })
     }
 
@@ -1048,7 +1092,7 @@ function draw() {
                 }
                 if (levelp == 11) {
                     gamestate = "castle";
-                    draw_grid(40);
+                    draw_grid(80);
                 }
             }
         }
@@ -1495,13 +1539,15 @@ function draw() {
     if (gamestate == "castle") {
         background(0);
         camera.zoom = 1;
-        pin.hide();
+        pin.visible = false;
         camera.position.x = width / 2;
         camera.position.y = height / 2;
         for (let i = 0; i < round(cols); i++) {
             for (let j = 0; j < round(rows); j++) {
                 x = i * tilesize;
                 y = j * tilesize;
+                imageMode(CENTER);
+
                 if (grid[i][j] == 0) {
                     fill(255);
                     rectMode(CENTER);
@@ -1511,9 +1557,88 @@ function draw() {
                     fill(0);
                     rectMode(CENTER);
                     rect(x, y, tilesize - 2, tilesize - 2);
+                    image(wbuildImg, x, y, tilesize, tilesize);
                 }
-    
-    
+                if (grid[i][j] == 2) {
+                    fill(0);
+                    rectMode(CENTER);
+                    rect(x, y, tilesize - 2, tilesize - 2);
+                    image(sbuildImg, x, y, tilesize, tilesize);
+                }
+                if (grid[i][j] == 3) {
+                    fill(0);
+                    rectMode(CENTER);
+                    rect(x, y, tilesize - 2, tilesize - 2);
+                    image(gbuildImg, x, y, tilesize, tilesize);
+                }
+                
+                textAlign(CENTER);
+                textSize(20);
+                fill("red");
+                text("Press 1 for wood", width / 2, 50);
+                text("Press 2 for stone", width / 2, 100);
+                text("Press 3 for gold", width / 2, 150);
+                text("Wood: " + woodCount, width / 2 - 200, 50);
+                text("Stone: " + stoneCount, width / 2 - 200, 100);
+                text("Gold: " + goldCount, width / 2 - 200, 150);
+
+                if (keyWentUp("1")) {
+                    if (woodCount >= 10) {
+                        for (let i = 0; i < round(cols); i++) {
+                            for (let j = 0; j < round(rows); j++) {
+                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                if (d < (tilesize)) {
+                                    if (grid[i][j] == 0) {
+                                        grid[i][j] = 1;
+                                        woodCount -= 10;
+                                    }
+                                    else {
+                                        grid[i][j] = 0;
+                                        woodCount += 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (keyWentUp("2")) {
+                    if (stoneCount >= 10) {
+                        for (let i = 0; i < round(cols); i++) {
+                            for (let j = 0; j < round(rows); j++) {
+                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                if (d < (tilesize / 2)) {
+                                    if (grid[i][j] == 2) {
+                                        grid[i][j] = 0;
+                                        stoneCount += 10;
+                                    }
+                                    else {
+                                        grid[i][j] = 2;
+                                        stoneCount -= 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (keyWentUp("3")) {
+                    if (goldCount >= 10) {
+                        for (let i = 0; i < round(cols); i++) {
+                            for (let j = 0; j < round(rows); j++) {
+                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                if (d < (tilesize)) {
+                                    if (grid[i][j] == 0) {
+                                        grid[i][j] = 3;
+                                        goldCount -= 10;
+                                    }
+                                    else {
+                                        grid[i][j] = 0;
+                                        goldCount += 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 //rect(x, y, tilesize - 1, tilesize - 1);
             }
         }
@@ -1526,7 +1651,17 @@ function draw() {
         }
     }
 }
-
+/*function mousePressed() {
+    console.log("PRESSED");
+    for (let i = 0; i < round(cols); i++) {
+        for (let j = 0; j < round(rows); j++) {
+            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+            if (d < (tilesize)) {
+                grid[i][j] = 1;
+            }
+        }
+    }
+}*/
 function Make2dArray(cols, rows) {
     let arr = new Array(cols);
     for (let i = 0; i < arr.length; i++) {
@@ -1584,17 +1719,5 @@ function createLevel (array, title, autox, autoxs, autoy, autoys) {
     if (level == 10) {
         pin.x = x10;
         pin.y = y10;
-    }
-}
-
-function mousePressed() {
-    console.log("PRESSED");
-    for (let i = 0; i < round(cols); i++) {
-        for (let j = 0; j < round(rows); j++) {
-            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-            if (d < (tilesize)) {
-                grid[i][j] = 1;
-            }
-        }
     }
 }
