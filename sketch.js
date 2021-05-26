@@ -19,11 +19,14 @@ var madvar = 0;
 var cols = 0;
 var rows = 0;
 
+var theendishere = false;
 var startdraw = false;
+
+var addendtime = 0;
 
 var iteration = 0;
 var jumpcount = 0;
-var level = 11;
+var level = 1;
 var warpthingy = 0;
 var warpthingyy = 0;
 var a = 0;
@@ -74,7 +77,7 @@ var addStone = 100;
 var lerpr = false;
 var lerpl = false;
 
-var levelp = 11;
+var levelp = 1;
 
 var ptimer = 0;
 
@@ -152,9 +155,10 @@ function preload() {
     telephone = loadSound("snd/telephone.wav");
     bossMusic = loadSound("snd/danana.wav")
     death = loadSound("snd/death.wav");
+    endMusic = loadSound("snd/endMusic.wav");
 
     allSound = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, 
-        bgMusic1, bgMusic2, telephone, bossMusic, telephone, death];
+        bgMusic1, bgMusic2, telephone, bossMusic, telephone, death, endMusic];
 }
 
 function setup() {
@@ -1557,12 +1561,21 @@ function draw() {
         background(0);
         if (startdraw == true) {
             imageMode(CENTER);
-            image(mountainImg, width / 2, height / 2, displayWidth * 4, displayHeight * 4);
+            if (theendishere == false) {
+                image(mountainImg, width / 2, height / 2, displayWidth * 4, displayHeight * 4);
+            }
             if (camera.zoom > 0) {
                 camera.zoom -= 0.01;
             }
+            if (camera.zoom == 0.1) {
+            }
+            if (camera.zoom < 0.1) {
+                theendishere = true;
+                starttheclock = false;
+                starttheclock2 = false;
+            }
         }
-        if (startdraw == false) {
+        if ((startdraw == false) || (theendishere == true)) {
             camera.zoom = 1;
         }
         shock = false;
@@ -1577,6 +1590,7 @@ function draw() {
 
         doneButton.mousePressed(function () {
             startdraw = true;
+            endMusic.loop();
             doneButton.hide();
         })
 
@@ -1586,153 +1600,156 @@ function draw() {
                 y = j * tilesize;
                 imageMode(CENTER);
 
-                if (grid[i][j] == 0) {
-                    fill(255);
-                    if (startdraw == false) {
-                        rectMode(CENTER);
-                        rect(x, y, tilesize - 2, tilesize - 2);
-                    }
-                }
-                if (grid[i][j] == 1) {
-                    fill(0);
-                    if (startdraw == false) {
-                        rectMode(CENTER);
-                        rect(x, y, tilesize - 2, tilesize - 2);
-                    }
-                    image(wbuildImg, x, y, tilesize, tilesize);
-                }
-                if (grid[i][j] == 2) {
-                    fill(0);
-                    if (startdraw == false) {
-                        rectMode(CENTER);
-                        rect(x, y, tilesize - 2, tilesize - 2);
-                    }
-                    image(sbuildImg, x, y, tilesize, tilesize);
-                }
-                if (grid[i][j] == 3) {
-                    fill(0);
-                    if (startdraw == false) {
-                        rectMode(CENTER);
-                        rect(x, y, tilesize - 2, tilesize - 2);
-                    }
-                    image(gbuildImg, x, y, tilesize, tilesize);
-                }
-                
-                textAlign(CENTER);
-                textSize(20);
-                fill("red");
-                text("Press 1 for wood", width / 2, 50);
-                text("Press 2 for stone", width / 2, 100);
-                text("Press 3 for gold", width / 2, 150);
-                text("Wood: " + woodCount, width / 2 - (displayWidth / 9.6), 50);
-                text("Stone: " + stoneCount, width / 2 - (displayWidth / 9.6), 100);
-                text("Gold: " + goldCount, width / 2 - (displayWidth / 9.6), 150);
-                text("Press 4 to remove wood", width / 2 + (displayWidth / 9.6), 50);
-                text("Press 5 to remove stone", width / 2 + (displayWidth / 9.6), 100);
-                text("Press 6 to remove gold", width / 2 + (displayWidth / 9.6), 150);
+                if (theendishere == false) {
 
-                if (keyWentDown("1")) {
-                    shock = true;
-                }
-                if (shock == true) {
-                    if (woodCount >= 10) {
-                        for (let i = 0; i < round(cols); i++) {
-                            for (let j = 0; j < round(rows); j++) {
-                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-                                if (d < (tilesize / 2)) {
-                                    if (grid[i][j] == 0) {
-                                        grid[i][j] = 1;
-                                        addWood -= 10;
+                    if (grid[i][j] == 0) {
+                        fill(255);
+                        if (startdraw == false) {
+                            rectMode(CENTER);
+                            rect(x, y, tilesize - 2, tilesize - 2);
+                        }
+                    }
+                    if (grid[i][j] == 1) {
+                        fill(0);
+                        if (startdraw == false) {
+                            rectMode(CENTER);
+                            rect(x, y, tilesize - 2, tilesize - 2);
+                        }
+                        image(wbuildImg, x, y, tilesize, tilesize);
+                    }
+                    if (grid[i][j] == 2) {
+                        fill(0);
+                        if (startdraw == false) {
+                            rectMode(CENTER);
+                            rect(x, y, tilesize - 2, tilesize - 2);
+                        }
+                        image(sbuildImg, x, y, tilesize, tilesize);
+                    }
+                    if (grid[i][j] == 3) {
+                        fill(0);
+                        if (startdraw == false) {
+                            rectMode(CENTER);
+                            rect(x, y, tilesize - 2, tilesize - 2);
+                        }
+                        image(gbuildImg, x, y, tilesize, tilesize);
+                    }
+                    
+                    textAlign(CENTER);
+                    textSize(20);
+                    fill("red");
+                    text("Press 1 for wood", width / 2, 50);
+                    text("Press 2 for stone", width / 2, 100);
+                    text("Press 3 for gold", width / 2, 150);
+                    text("Wood: " + woodCount, width / 2 - (displayWidth / 9.6), 50);
+                    text("Stone: " + stoneCount, width / 2 - (displayWidth / 9.6), 100);
+                    text("Gold: " + goldCount, width / 2 - (displayWidth / 9.6), 150);
+                    text("Press 4 to remove wood", width / 2 + (displayWidth / 9.6), 50);
+                    text("Press 5 to remove stone", width / 2 + (displayWidth / 9.6), 100);
+                    text("Press 6 to remove gold", width / 2 + (displayWidth / 9.6), 150);
+
+                    if (keyWentDown("1")) {
+                        shock = true;
+                    }
+                    if (shock == true) {
+                        if (woodCount >= 10) {
+                            for (let i = 0; i < round(cols); i++) {
+                                for (let j = 0; j < round(rows); j++) {
+                                    let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                    if (d < (tilesize / 2)) {
+                                        if (grid[i][j] == 0) {
+                                            grid[i][j] = 1;
+                                            addWood -= 10;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                if (keyWentDown("4")) {
-                    shock4 = true;
-                }
-                if (shock4 == true) {
-                    for (let i = 0; i < round(cols); i++) {
-                        for (let j = 0; j < round(rows); j++) {
-                            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-                            if (d < (tilesize / 2)) {
-                                if (grid[i][j] == 1) {
-                                    grid[i][j] = 0;
-                                    addWood += 10;
-                                }
-                            }
-                        }
+                    if (keyWentDown("4")) {
+                        shock4 = true;
                     }
-                }
-
-                if (keyWentDown("2")) {
-                    shock2 = true;
-                }
-                if (shock2 == true) {
-                    if (stoneCount >= 10) {
+                    if (shock4 == true) {
                         for (let i = 0; i < round(cols); i++) {
                             for (let j = 0; j < round(rows); j++) {
                                 let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
                                 if (d < (tilesize / 2)) {
-                                    if (grid[i][j] == 0) {
-                                        grid[i][j] = 2;
-                                        addStone -= 10;
+                                    if (grid[i][j] == 1) {
+                                        grid[i][j] = 0;
+                                        addWood += 10;
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                if (keyWentDown("5")) {
-                    shock5 = true;
-                }
-                if (shock5 == true) {
-                    for (let i = 0; i < round(cols); i++) {
-                        for (let j = 0; j < round(rows); j++) {
-                            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-                            if (d < (tilesize / 2)) {
-                                if (grid[i][j] == 2) {
-                                    grid[i][j] = 0;
-                                    addStone += 10;
-                                }
-                            }
-                        }
+                    if (keyWentDown("2")) {
+                        shock2 = true;
                     }
-                }
-
-                if (keyWentDown("3")) {
-                    shock3 = true;
-                }
-                if (shock3 == true) {
-                    if (goldCount >= 10) {
-                        for (let i = 0; i < round(cols); i++) {
-                            for (let j = 0; j < round(rows); j++) {
-                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-                                if (d < (tilesize / 2)) {
-                                    if (grid[i][j] == 0) {
-                                        grid[i][j] = 3;
-                                        addGold -= 10;
+                    if (shock2 == true) {
+                        if (stoneCount >= 10) {
+                            for (let i = 0; i < round(cols); i++) {
+                                for (let j = 0; j < round(rows); j++) {
+                                    let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                    if (d < (tilesize / 2)) {
+                                        if (grid[i][j] == 0) {
+                                            grid[i][j] = 2;
+                                            addStone -= 10;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                if (keyWentDown("6")) {
-                    shock6 = true;
-                }
-                if (shock6 == true) {
-                    for (let i = 0; i < round(cols); i++) {
-                        for (let j = 0; j < round(rows); j++) {
-                            let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
-                            if (d < (tilesize / 2)) {
-                                if (grid[i][j] == 3) {
-                                    grid[i][j] = 0;
-                                    addGold += 10;
+                    if (keyWentDown("5")) {
+                        shock5 = true;
+                    }
+                    if (shock5 == true) {
+                        for (let i = 0; i < round(cols); i++) {
+                            for (let j = 0; j < round(rows); j++) {
+                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                if (d < (tilesize / 2)) {
+                                    if (grid[i][j] == 2) {
+                                        grid[i][j] = 0;
+                                        addStone += 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (keyWentDown("3")) {
+                        shock3 = true;
+                    }
+                    if (shock3 == true) {
+                        if (goldCount >= 10) {
+                            for (let i = 0; i < round(cols); i++) {
+                                for (let j = 0; j < round(rows); j++) {
+                                    let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                    if (d < (tilesize / 2)) {
+                                        if (grid[i][j] == 0) {
+                                            grid[i][j] = 3;
+                                            addGold -= 10;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (keyWentDown("6")) {
+                        shock6 = true;
+                    }
+                    if (shock6 == true) {
+                        for (let i = 0; i < round(cols); i++) {
+                            for (let j = 0; j < round(rows); j++) {
+                                let d = dist(i * tilesize, j * tilesize, mouseX, mouseY);
+                                if (d < (tilesize / 2)) {
+                                    if (grid[i][j] == 3) {
+                                        grid[i][j] = 0;
+                                        addGold += 10;
+                                    }
                                 }
                             }
                         }
@@ -1740,6 +1757,34 @@ function draw() {
                 }
             }
         }
+
+        if (theendishere == true) {
+            addendtime += 1;
+            textSize(90);
+            fill(255, 215, 0);
+            textAlign(CENTER, CENTER);
+            text("THE END", width / 2, height / 2);
+            textSize(30);
+            if (addendtime > 100) {
+                starttheclock = true;
+            }
+            if (starttheclock == true) {
+                camera.position.y += 1300;
+            }
+            if (addendtime > 200) {
+                starttheclock2 = true;
+            }
+            if (starttheclock2 == true) {
+                camera.position.y += 1300
+            }
+            text("Artists: Madhuram Sharma", width / 2, height / 2 + 1000);
+            text("Programmer: Madhuram Sharma", width / 2, height / 2 + 1200);
+            text("Voices: Madhuram Sharma", width / 2, height / 2 + 1400);
+            text("Sound Effects: Madhuram Sharma", width / 2, height / 2 + 1600);
+            textSize(90);
+            text("THANKS FOR PLAYING!", width / 2, height / 2 + 2600);
+        }
+
     }
     if (pause == false) {
         drawSprites();
