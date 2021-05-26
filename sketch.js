@@ -62,17 +62,17 @@ var y7;
 
 var x = 0;
 
-var woodCount = 100;
-var addWood = 100;
+var woodCount = 0;
+var addWood = 0;
 
 var addTimeforintro = 0;
 var addsome = 0;
 
-var goldCount = 100;
-var addGold = 100;
+var goldCount = 0;
+var addGold = 0;
 
-var stoneCount = 100;
-var addStone = 100;
+var stoneCount = 0;
+var addStone = 0;
 
 var lerpr = false;
 var lerpl = false;
@@ -193,7 +193,7 @@ function setup() {
     doneButton.style("font-size", 40 + "pt");
     doneButton.style("border-radius", 25);
     doneButton.style("background-color", "gold");
-    doneButton.position((width - (displayWidth / 6.066)), (displayHeight / 18.2));
+    doneButton.position((width - (displayWidth / 6.066)), (displayHeight / 16.2));
     doneButton.hide();
 
 }
@@ -259,7 +259,8 @@ function draw() {
         text("Run with shift", width / 2, 140);
         text("Enter levels by pressing Enter", width / 2, 240);
         text("Get as much materials as you can! (You'll need them later)", width / 2, 340);
-        text("Good Luck!", width / 2, 440);
+        text("Press p to pause", width / 2, 440);
+        text("Good Luck!", width / 2, 540);
         backButton.mousePressed(function () {
             menuButton.show();
             playButton.show();
@@ -1443,8 +1444,9 @@ function draw() {
                 textSize(35);
                 //text("STATS", camera.position.x - width / 4, camera.position.y - height / 6);
                 text("Wood: " + woodCount, camera.position.x, camera.position.y - height / 8);
-                text("Gold: " + goldCount, camera.position.x, camera.position.y);
-                text("Level: " + level, camera.position.x, camera.position.y + (height / 8));
+                text("Stone: " + stoneCount, camera.position.x, camera.position.y);
+                text("Gold: " + goldCount, camera.position.x, camera.position.y + (height / 8))
+                text("Level: " + level, camera.position.x, camera.position.y + ((2 * height) / 8));
                 text("Press p to unpause", camera.position.x, camera.position.y + ((3 * height) / 8))
             
             }
