@@ -200,6 +200,7 @@ function setup() {
 
 function draw() {
     background(255);
+    scale(displayWidth / 1920, displayHeight / 1080);
     if (woodCount < addWood) {
         woodCount += 1;
     }
